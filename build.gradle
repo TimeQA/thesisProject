@@ -15,7 +15,8 @@ def junitVersion = "5.9.1",
         restAssuredVersion = "5.3.0",
         assertjVersion = "3.23.1",
         fakerVersion = "1.0.2",
-        appiumVersion = "8.2.0"
+        appiumVersion = "8.2.0",
+        restAssuredAllureVersion = "2.20.0"
 
 
 allure {
@@ -38,9 +39,10 @@ dependencies {
             "org.aeonbits.owner:owner:$ownerVersion",
             "org.slf4j:slf4j-simple:$slf4jVersion",
             "io.rest-assured:rest-assured:$restAssuredVersion",
-            "io.appium:java-client:8.2.0",
+            "io.appium:java-client:$appiumVersion",
             "org.assertj:assertj-core:$assertjVersion",
-            "com.github.javafaker:javafaker:$fakerVersion"
+            "com.github.javafaker:javafaker:$fakerVersion",
+            "io.qameta.allure:allure-rest-assured:$restAssuredAllureVersion"
     )
 }
 
