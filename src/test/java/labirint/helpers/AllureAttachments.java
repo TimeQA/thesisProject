@@ -1,0 +1,67 @@
+package labirint.helpers;
+
+import io.qameta.allure.Allure;
+import io.qameta.allure.Attachment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import static com.codeborne.selenide.Selenide.sleep;
+
+public class AllureAttachments {
+    public static final Logger LOGGER = LoggerFactory.getLogger(AllureAttachments.class);
+
+    @Attachment(value = "{attachName}", type = "text/plain")
+    private static String addMessage(final String attachName, final String text) {
+        return text;
+    }
+
+    public static void addBrowserConsoleLogs() {
+        addMessage("Browser console logs", DriverUtils.getConsoleLogs());
+    }
+
+    @Attachment(value = "{attachName}", type = "image/png")
+    public static byte[] addScreenshotAs(final String attachName) {
+        return DriverUtils.getScreenshotAsBytes();
+    }
+
+    @Attachment(value = "Page source", type = "text/html")
+    public static byte[] addPageSource() {
+        return DriverUtils.getPageSourceAsBytes();
+    }
+
+    @Attachment(value = "Video", type = "text/html", fileExtension = ".html")
+    public static String addVideoBrowserstack(final String sessionId) {
+        return "<html><body><video width='100%' height='100%' controls autoplay><source src='"
+                + Browserstack.videoUrl(sessionId)
+                + "' type='video/mp4'></video></body></html>";
+    }
+
+
+    public static void addVideo(final String sessionId) {
+        URL videoUrl = DriverUtils.getVideoUrl(sessionId);
+        if (videoUrl != null) {
+            InputStream videoInputStream = null;
+            sleep(1000);
+
+            for (int i = 0; i < 20; i++) {
+                try {
+                    videoInputStream = videoUrl.openStream();
+                    break;
+                } catch (FileNotFoundException e) {
+                    sleep(1000);
+                } catch (IOException e) {
+                    LOGGER.warn("[ALLURE VIDEO ATTACHMENT ERROR] Cant attach allure video, {}", videoUrl);
+                    e.printStackTrace();
+                }
+            }
+            if (videoInputStream != null) {
+                Allure.addAttachment("Video", "video/mp4", videoInputStream, "mp4");
+            }
+        }
+    }
+}
