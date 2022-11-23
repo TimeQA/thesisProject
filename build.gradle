@@ -16,7 +16,8 @@ def junitVersion = "5.9.1",
         assertjVersion = "3.23.1",
         fakerVersion = "1.0.2",
         appiumVersion = "8.2.0",
-        restAssuredAllureVersion = "2.20.0"
+        restAssuredAllureVersion = "2.20.0",
+        enginVersion = "1.9.1"
 
 
 allure {
@@ -42,15 +43,35 @@ dependencies {
             "io.appium:java-client:$appiumVersion",
             "org.assertj:assertj-core:$assertjVersion",
             "com.github.javafaker:javafaker:$fakerVersion",
-            "io.qameta.allure:allure-rest-assured:$restAssuredAllureVersion"
+            "io.qameta.allure:allure-rest-assured:$restAssuredAllureVersion",
+            "org.junit.platform:junit-platform-engine:$enginVersion"
     )
 }
 
-test {
-    useJUnitPlatform()
+tasks.withType(Test) {
     systemProperties(System.getProperties())
-}
+    useJUnitPlatform {
+        if (System.getProperty("tag") != null && !System.getProperty("tag").isEmpty()) {
+            includeTags System.getProperty("tag")
+        }
+    }
+    if (System.getProperty("tag") == "UI" && System.getProperty("env") == "local") {
+        systemProperties += [
+                'junit.jupiter.execution.parallel.enabled'             : true,
+                'junit.jupiter.execution.parallel.mode.default'        : 'concurrent',
+                'junit.jupiter.execution.parallel.mode.classes.default': 'same_thread',
+                'junit.jupiter.execution.parallel.config.strategy'     : 'custom',
+                'junit.jupiter.execution.parallel.config.custom.class' : 'chitaigorod.helpers.CustomStrategy'
+        ]
+    }
 
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+}
 compileJava {
     options.encoding = 'UTF-8'
 }
