@@ -17,13 +17,17 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
-public class LabirintTestUI extends  UITestBase{
+public class LabirintTestUI {
 
 
     // Сделать проверку на открытие главной страцицы
     // Сделать проверку на добавление книги в корзину
     // Сделать проверку на авторизацию или регистрацию
 
+    @Test
+    void registrationTest() {
+
+    }
     @Test
     void addBookBasketAndFavourites() {
         open("https://www.labirint.ru/");
@@ -35,21 +39,13 @@ public class LabirintTestUI extends  UITestBase{
     }
 
 //    cart-icon-js
-    //    Parameterized test, two arguments input. Result test not empty
+//        Parameterized test, two arguments input. Result test not empty
     @ValueSource(strings = {"Берсерк", "Дэн Браун"})
     @ParameterizedTest(name = "Результаты поиска не пустые для запроса {0}")
     void searchBookNotEmpty(String bookName) {
         open("https://www.labirint.ru/");
-        step(String.format("Поиск книг %s", bookName), () -> {
-            mainPage.searchBook(bookName);
-        });
-
-        step(String.format("Проверка наличия книг по запросу %s", bookName), () -> {
-            mainPage.checkResultSearch();
-        });
-
-//        $(" #search-field").setValue(bookName).pressEnter();
-//        $$("div .genres-carousel__item").shouldBe(CollectionCondition.sizeGreaterThan(0));
+        $("#search-field").setValue(bookName).pressEnter();
+        $$("div .genres-carousel__item").shouldBe(CollectionCondition.sizeGreaterThan(0));
     }
 
 

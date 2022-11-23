@@ -6,24 +6,38 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
+import static com.codeborne.selenide.Selenide.open;
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 
-public class LabirintWeb extends UITestBase{
+public class LabirintWeb {
 
-    @Test
-    void addBookInBasketAndFavourites(final TestInfo info) {
-        if (info.getDisplayName().equals("Проверка отображения инфо-текста на странице Закладки")) {
-            return;
-        }
+//    @Test
+//    void addBookInBasketAndFavourites(final TestInfo info) {
+//        if (info.getDisplayName().equals("Проверка отображения инфо-текста на странице Закладки")) {
+//            return;
+//        }
+//
+//        step(String.format("Открытие главной страницы %s", "https://www.labirint.ru/"), () -> {
+//            mainPage.openPage();
+//        });
+//    }
 
-        step(String.format("Открытие главной страницы %s", "https://www.labirint.ru/"), () -> {
-            mainPage.openPage();
-        });
-    }
+//    @ValueSource(strings = {"Берсерк", "Дэн Браун"})
+//    @ParameterizedTest(name = "Результаты поиска не пустые для запроса {0}")
+//    void searchBookNotEmpty(String bookName) {
+//        open("https://www.labirint.ru/");
+//        step(String.format("Поиск книг %s", bookName), () -> {
+//            mainPage.searchBook(bookName);
+//        });
+//
+//        step(String.format("Проверка наличия книг по запросу %s", bookName), () -> {
+//            mainPage.checkResultSearch();
+//        });
+//    }
 
 //    @Disabled
 //    @Tag("UI")
