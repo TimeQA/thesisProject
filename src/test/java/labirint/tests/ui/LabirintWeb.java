@@ -25,18 +25,18 @@ public class LabirintWeb extends UITestBase{
         });
     }
 
-    @Disabled
-    @Tag("UI")
-    @ValueSource(strings = {"Death Note", "Dead Guilty", "The Art of War"})
-    @ParameterizedTest(name = "Поиск книги по названию {0}")
-    void searchBookTest(final String bookName) {
-
-        step(String.format("Поиск книги %s", bookName), () -> {
-            mainPage.searchBook(bookName);
-        });
-
+//    @Disabled
+//    @Tag("UI")
+//    @ValueSource(strings = {"Death Note", "Dead Guilty", "The Art of War"})
+//    @ParameterizedTest(name = "Поиск книги по названию {0}")
+//    void searchBookTest(final String bookName) {
+//
+//        step(String.format("Поиск книги %s", bookName), () -> {
+//            mainPage.searchBook(bookName);
+//        });
+//
 //        step(String.format("Проверка отображения книги %s", bookName), () -> {
 //            searchPage.checkIfBookExist(bookName);
 //        });
-    }
+//    }
 }
