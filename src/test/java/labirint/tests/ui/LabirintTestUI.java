@@ -24,7 +24,7 @@ public class LabirintTestUI extends UITestBase {
 
     @Test
     @DisplayName("Проверка главной страницы и наличие на ней элементов")
-    void searchBookNotEmpty() {
+    void mainPageNotEmpty() {
         open("https://www.labirint.ru/");
         step("Проверка наличия элементов товаров на главной страцице", () -> {
             mainPage.healthCheck();
@@ -36,13 +36,26 @@ public class LabirintTestUI extends UITestBase {
     void appearanceButtonForOrder() {
         open("https://www.labirint.ru/");
         $(".product_labeled:nth-child(3)").$(byText("В КОРЗИНУ")).click();
-        $(".product_labeled:nth-child(3)").shouldBe(Condition.text("ОФОРМИТЬ")).click();
         $(".product_labeled:nth-child(3)").$(byText("ОФОРМИТЬ")).click();
+    }
+
+    @Test
+    @DisplayName("Появление кнопки \"ОФОРМИТЬ\"")
+    void appearanceButtonForOrderPO() {
+        open("https://www.labirint.ru/");
+
+        step("Проверка наличия элементов товаров на главной страцице", () -> {
+            mainPage.clickButtonAddedProductBasket();
+        });
+
+        step("Проверка наличия элементов товаров на главной страцице", () -> {
+            mainPage.clickButtonFormaliseOrder();
+        });
     }
 
 
     @ValueSource(strings = {"Огненный поток", "1984"})
-    @ParameterizedTest(name = "Проверка перехода в корзину через кнопку \"ОФОРМИТЬ\" {0}")
+    @ParameterizedTest(name = "Проверка добавления книги в раздел \"Отложено\" {0}")
     void addBookBasketAndFavourites(String bookName) {
         open("https://www.labirint.ru/");
         $("#search-field").setValue(bookName).pressEnter();
@@ -51,6 +64,23 @@ public class LabirintTestUI extends UITestBase {
         $(".cart-icon-js").click();
         $("li.ui-corner-top:nth-child(1)").shouldBe(Condition.text("1"));
         $("li.ui-corner-top:nth-child(2)").shouldBe(Condition.text("1"));
+    }
+
+    @ValueSource(strings = {"Огненный поток", "1984"})
+    @ParameterizedTest(name = "Проверка добавления книги в раздел \"Отложено\" {0}")
+    void addBookBasketAndFavouritesPO(String bookName) {
+        open("https://www.labirint.ru/");
+        step(String.format("Поиск книги %s", bookName), () -> {
+            mainPage.searchBook(bookName);
+        });
+
+        step("Переход на страницу \"Отложено\"", () -> {
+            mainPage.goFavoritesPage();
+        });
+
+        step(String.format("Проверка наличия книги в разделе  %s \"Отложено\"" , bookName), () -> {
+            mainPage.goFavoritesPage();
+        });
     }
 
     @ValueSource(strings = {"Огненный поток", "1984"})
@@ -88,5 +118,21 @@ public class LabirintTestUI extends UITestBase {
         open("https://www.labirint.ru/");
         $(".b-header-b-menu-wrapper").$(byText(typeDevice)).hover();
         $$("ul li.b-menu-second-item").contains(expectedTypeDevice);
+    }
+
+    @DisplayName("Проверка drop-down menu на наличие разделов подменю")
+    @MethodSource
+    @ParameterizedTest(name = "Для меню \"{0}\" отображаются разделы \"{1}\"")
+    void actualCommonComplexAvtoRuDropMenuTestPO (String typeDevice, List<String> expectedTypeDevice) {
+        open("https://www.labirint.ru/");
+
+        step("Проверка наличия элементов товаров на главной страцице", () -> {
+            mainPage.selectItemHeaderMenu(typeDevice);
+        });
+
+        step("Проверка наличия элементов товаров на главной страцице", () -> {
+            mainPage.checkSubitemDropDownMenu(expectedTypeDevice);
+        });
+
     }
 }
