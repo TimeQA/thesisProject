@@ -21,22 +21,20 @@ import static io.qameta.allure.Allure.step;
 
 public class LabirintTestUI {
 
-    @ValueSource(strings = {"Берсерк", "Дэн Браун"})
-    @ParameterizedTest(name = "Результаты поиска не пустые для запроса {0}")
-    @DisplayName("Проверка главной страницы и работы поиска")
-    void searchBookNotEmpty(String bookName) {
+    @Test
+    @DisplayName("Проверка главной страницы и наличие на ней элементов")
+    void searchBookNotEmpty() {
         open("https://www.labirint.ru/");
-//        $("#search-field").setValue(bookName).pressEnter();
-        $$("div .genres-carousel__item").shouldBe(CollectionCondition.sizeGreaterThan(0));
+        step(St)
     }
 
     @Test
     @DisplayName("Появление кнопки \"ОФОРМИТЬ\"")
     void appearanceButtonForOrder() {
         open("https://www.labirint.ru/");
-        $(".product_labeled:nth-child(1)").$(byText("В КОРЗИНУ")).click();
-        $(".product_labeled:nth-child(1)").shouldBe(Condition.text("ОФОРМИТЬ")).click();
-        $(".product_labeled:nth-child(1)").$(byText("ОФОРМИТЬ")).click();
+        $(".product_labeled:nth-child(3)").$(byText("В КОРЗИНУ")).click();
+        $(".product_labeled:nth-child(3)").shouldBe(Condition.text("ОФОРМИТЬ")).click();
+        $(".product_labeled:nth-child(3)").$(byText("ОФОРМИТЬ")).click();
     }
 
 
@@ -45,7 +43,7 @@ public class LabirintTestUI {
     void addBookBasketAndFavourites(String bookName) {
         open("https://www.labirint.ru/");
         $("#search-field").setValue(bookName).pressEnter();
-        $(".product_labeled:nth-child(1)").$(byText("В КОРЗИНУ")).click();
+        $(".buy-link").click();
         $(".icon-fave:nth-child(1)").click();
         $(".cart-icon-js").click();
         $("li.ui-corner-top:nth-child(1)").shouldBe(Condition.text("1"));
