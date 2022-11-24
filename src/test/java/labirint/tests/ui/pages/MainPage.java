@@ -45,11 +45,6 @@ public class MainPage {
         return this;
     }
 
-    public final MainPage openShopsPage() {
-        shopsLink.click();
-
-        return this;
-    }
 
     public final MainPage clickButtonFormaliseOrder() {
         someProduct.$(byText("В КОРЗИНУ")).click();

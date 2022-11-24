@@ -3,6 +3,7 @@ package labirint.tests.ui;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import labirint.helpers.RandomUtils;
+import labirint.tests.ui.pages.UITestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,13 +20,15 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
-public class LabirintTestUI {
+public class LabirintTestUI extends UITestBase {
 
     @Test
     @DisplayName("Проверка главной страницы и наличие на ней элементов")
     void searchBookNotEmpty() {
         open("https://www.labirint.ru/");
-        step(St)
+        step("Проверка наличия элементов товаров на главной страцице", () -> {
+            mainPage.healthCheck();
+        });
     }
 
     @Test
