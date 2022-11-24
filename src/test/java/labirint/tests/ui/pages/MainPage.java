@@ -4,17 +4,20 @@ package labirint.tests.ui.pages;
 import com.codeborne.selenide.*;
 
 import static com.codeborne.selenide.Configuration.baseUrl;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class MainPage {
 
+
     private final SelenideElement searchField = $("#search-field");
 
     private final SelenideElement basketLink = $(".cart-icon-js");
+
     private final SelenideElement shopsLink = $$(".header-menu__item")
             .findBy(Condition.text("Адреса магазинов"));
-    private final SelenideElement souvenirsLink = $$(".nav__item.nav__item_popup")
-            .findBy(Condition.text("Сувениры"));
+
+    private final SelenideElement someProduct = $(".product_labeled:nth-child(1)");
 
     private final SelenideElement quantityInBasket = $("li.ui-corner-top:nth-child(1)").shouldBe(Condition.text("1"));
 
@@ -41,9 +44,8 @@ public class MainPage {
         return this;
     }
 
-    public final MainPage openSouvenirsPage() {
-        souvenirsLink.click();
-
+    public final MainPage clickButtonFormaliseOrder() {
+        someProduct.$(byText("В КОРЗИНУ")).click();
         return this;
     }
 

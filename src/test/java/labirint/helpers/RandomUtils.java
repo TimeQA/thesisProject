@@ -6,8 +6,8 @@ public class RandomUtils {
 
     private static final Faker FAKER = new Faker();
 
-    public static String getRandomSurname() {
-        return FAKER.name().lastName();
+    public static String getPhoneNumber() {
+        return FAKER.phoneNumber().phoneNumber();
     }
 
     public static String getRandomName() {
@@ -16,5 +16,9 @@ public class RandomUtils {
 
     public static String getRandomSecondName() {
         return FAKER.name().lastName();
+    }
+
+    public static String getEmail() {
+        return FAKER.internet().emailAddress();
     }
 }
