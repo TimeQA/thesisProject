@@ -86,4 +86,89 @@ public class LabirintTestUI {
         $(".b-header-b-menu-wrapper").$(byText(typeDevice)).hover();
         $$("ul li.b-menu-second-item").contains(expectedTypeDevice);
     }
+
+
+
+
+    @Test
+    @DisplayName("Проверка главной страницы и наличие на ней элементов")
+    void mainPageNotEmptyPO() {
+        open("https://www.labirint.ru/");
+        step("Проверка наличия элементов товаров на главной страцице", () -> {
+            mainPage.healthCheck();
+        });
+    }
+
+    @Test
+    @DisplayName("Появление кнопки \"ОФОРМИТЬ\"")
+    void appearanceButtonForOrderPO() {
+        open("https://www.labirint.ru/");
+
+        step("Добавление товара в корзину", () -> {
+            mainPage.clickButtonAddedProductBasket();
+        });
+
+        step("Переход на страницу оформления товара по кнопке \"ОФОРМИТЬ\"", () -> {
+            mainPage.clickButtonFormaliseOrder();
+        });
+    }
+
+
+
+    @ValueSource(strings = {"Огненный поток", "1984"})
+    @ParameterizedTest(name = "Проверка добавления книги в раздел \"Отложено\" {0}")
+    void addBookBasketAndFavouritesPO(String bookName) {
+        open("https://www.labirint.ru/");
+        step(String.format("Поиск книги %s", bookName), () -> {
+            mainPage.searchBook(bookName);
+        });
+
+        step("Нажать на кнопку \"Отложить\"", () -> {
+            mainPage.addFirstProductInFavorites();
+        });
+
+        step("Переход на страницу \"Отложено\"", () -> {
+            mainPage.goFavoritesPage();
+        });
+
+        step(String.format("Проверка наличия книги в разделе  %s \"Отложено\"" , bookName), () -> {
+            mainPage.checkProductOnBasketOrFavoritesPage(bookName);
+        });
+    }
+
+    @ValueSource(strings = {"Огненный поток", "1984"})
+    @ParameterizedTest(name = "Проверка добавления книги в корзину {0}")
+    void checkAddBookBasketPO(String bookName) {
+        open("https://www.labirint.ru/");
+
+        step(String.format("Поиск книги %s", bookName), () -> {
+            mainPage.searchBook(bookName);
+        });
+
+        step(String.format(" %s", bookName), () -> {
+            mainPage.goBasketPage();
+        });
+
+        step(String.format("Проверка наличия книги в разделе  %s \"Отложено\"" , bookName), () -> {
+            mainPage.checkProductOnBasketOrFavoritesPage(bookName);
+        });
+    }
+
+
+
+    @DisplayName("Проверка drop-down menu на наличие разделов подменю")
+    @MethodSource
+    @ParameterizedTest(name = "Для меню \"{0}\" отображаются разделы \"{1}\"")
+    void actualCommonComplexAvtoRuDropMenuTestPO (String typeDevice, List<String> expectedTypeDevice) {
+        open("https://www.labirint.ru/");
+
+        step("Проверка наличия элементов товаров на главной страцице", () -> {
+            mainPage.selectItemHeaderMenu(typeDevice);
+        });
+
+        step("Проверка наличия элементов товаров на главной страцице", () -> {
+            mainPage.checkSubitemDropDownMenu(expectedTypeDevice);
+        });
+
+    }
 }
