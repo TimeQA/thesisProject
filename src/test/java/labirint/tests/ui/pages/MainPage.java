@@ -18,7 +18,7 @@ public class MainPage {
 
     private final SelenideElement favoritesLink = $(".b-header-b-personal-e-icon-count-m-putorder");
 
-
+//    top-link-main_putorder
     private final SelenideElement headerMenu = $(".b-header-b-menu-wrapper");
 
     private final SelenideElement addBasketSomeProduct = $(".product_labeled:nth-child(3)");
@@ -50,12 +50,11 @@ public class MainPage {
         return this;
     }
 
-    public final MainPage searchBook(final String bookName) {
-        searchField.setValue(bookName).pressEnter();
+    public final MainPage healthCheck() {
+        elementsOnPage.shouldBe(CollectionCondition.sizeGreaterThan(0));
 
         return this;
     }
-
 
     public final MainPage clickButtonAddedProductBasket() {
         addBasketSomeProduct.$(byText("В КОРЗИНУ")).click();
@@ -68,6 +67,12 @@ public class MainPage {
         return this;
     }
 
+    public final MainPage searchBook(final String bookName) {
+        searchField.setValue(bookName).pressEnter();
+
+        return this;
+    }
+
 
     public final MainPage openBasketPage() {
         basketLink.click();
@@ -75,11 +80,6 @@ public class MainPage {
         return this;
     }
 
-    public final MainPage healthCheck() {
-        elementsOnPage.shouldBe(CollectionCondition.sizeGreaterThan(0));
-
-        return this;
-    }
 
     public final MainPage selectItemHeaderMenu(String typeDevice) {
         headerMenu.$(byText(typeDevice)).hover();
@@ -99,10 +99,20 @@ public class MainPage {
         return this;
     }
 
+    public final MainPage goBasketPage() {
+        basketLink.click();
+
+        return this;
+
+    }
+
+
     public final MainPage checkProductOnBasketOrFavoritesPage(String bookName) {
         selectedProductInBasketOrFavorites.shouldBe(Condition.text(bookName));
 
         return this;
     }
+
+
 
 }

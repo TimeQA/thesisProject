@@ -24,7 +24,7 @@ public class LabirintTestUI extends UITestBase {
 
     @Test
     @DisplayName("Проверка главной страницы и наличие на ней элементов")
-    void mainPageNotEmpty() {
+    void mainPageNotEmptyPO() {
         open("https://www.labirint.ru/");
         step("Проверка наличия элементов товаров на главной страцице", () -> {
             mainPage.healthCheck();
@@ -33,22 +33,14 @@ public class LabirintTestUI extends UITestBase {
 
     @Test
     @DisplayName("Появление кнопки \"ОФОРМИТЬ\"")
-    void appearanceButtonForOrder() {
-        open("https://www.labirint.ru/");
-        $(".product_labeled:nth-child(3)").$(byText("В КОРЗИНУ")).click();
-        $(".product_labeled:nth-child(3)").$(byText("ОФОРМИТЬ")).click();
-    }
-
-    @Test
-    @DisplayName("Появление кнопки \"ОФОРМИТЬ\"")
     void appearanceButtonForOrderPO() {
         open("https://www.labirint.ru/");
 
-        step("Проверка наличия элементов товаров на главной страцице", () -> {
+        step("Добавление товара в корзину", () -> {
             mainPage.clickButtonAddedProductBasket();
         });
 
-        step("Проверка наличия элементов товаров на главной страцице", () -> {
+        step("Переход на страницу оформления товара по кнопке \"ОФОРМИТЬ\"", () -> {
             mainPage.clickButtonFormaliseOrder();
         });
     }
@@ -79,11 +71,29 @@ public class LabirintTestUI extends UITestBase {
         });
 
         step(String.format("Проверка наличия книги в разделе  %s \"Отложено\"" , bookName), () -> {
-            mainPage.goFavoritesPage();
+            mainPage.checkProductOnBasketOrFavoritesPage(bookName);
         });
     }
 
     @ValueSource(strings = {"Огненный поток", "1984"})
+    @ParameterizedTest(name = "Проверка добавления книги в корзину {0}")
+    void checkAddBookBasketPO(String bookName) {
+        open("https://www.labirint.ru/");
+
+        step(String.format("Поиск книги %s", bookName), () -> {
+            mainPage.searchBook(bookName);
+        });
+
+        step(String.format(" %s", bookName), () -> {
+            mainPage.goBasketPage();
+        });
+
+        step(String.format("Проверка наличия книги в разделе  %s \"Отложено\"" , bookName), () -> {
+            mainPage.checkProductOnBasketOrFavoritesPage(bookName);
+        });
+    }
+
+  @ValueSource(strings = {"Огненный поток", "1984"})
     @ParameterizedTest(name = "Проверка добавления книги в корзину {0}")
     void checkAddBookBasket(String bookName) {
         open("https://www.labirint.ru/");
