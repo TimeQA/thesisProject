@@ -20,7 +20,7 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
-public class LabirintTestUI {
+public class LabirintTestUI extends UITestBase{
 
     @Test
     @DisplayName("Проверка главной страницы и наличие на ней элементов")
