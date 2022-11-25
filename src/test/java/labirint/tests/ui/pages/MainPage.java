@@ -25,6 +25,7 @@ public class MainPage {
 
     private final SelenideElement formaliseButtonSomeProduct = $(".product_labeled:nth-child(3)");
 
+    private final SelenideElement firstProductInFavorites = $(".icon-fave:nth-child(1)");
     private final SelenideElement selectedProductInBasketOrFavorites = $(".need-watch");
 
     private final SelenideElement quantityInBasket = $("li.ui-corner-top:nth-child(1)")
@@ -58,6 +59,12 @@ public class MainPage {
 
     public final MainPage clickButtonAddedProductBasket() {
         addBasketSomeProduct.$(byText("В КОРЗИНУ")).click();
+        return this;
+    }
+
+    public final MainPage addFirstProductInFavorites() {
+        firstProductInFavorites.click();
+
         return this;
     }
 

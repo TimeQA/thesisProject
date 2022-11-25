@@ -66,6 +66,10 @@ public class LabirintTestUI extends UITestBase {
             mainPage.searchBook(bookName);
         });
 
+        step("Нажать на кнопку \"Отложить\"", () -> {
+            mainPage.addFirstProductInFavorites();
+        });
+
         step("Переход на страницу \"Отложено\"", () -> {
             mainPage.goFavoritesPage();
         });
