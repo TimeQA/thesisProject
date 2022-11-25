@@ -3,6 +3,7 @@ package labirint.tests.ui;
 import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import labirint.helpers.RandomUtils;
+import labirint.tests.ui.pages.MainPage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
