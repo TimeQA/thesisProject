@@ -25,7 +25,10 @@ public class LabirintTestUI extends UITestBase {
     @Test
     @DisplayName("Проверка главной страницы и наличие на ней элементов")
     void mainPageNotEmptyPO() {
-        open("https://www.labirint.ru/");
+        step("Открыть главную страницу", () -> {
+            mainPage.openPage();
+        });
+
         step("Проверка наличия элементов товаров на главной страцице", () -> {
             mainPage.healthCheck();
         });
@@ -34,7 +37,9 @@ public class LabirintTestUI extends UITestBase {
     @Test
     @DisplayName("Появление кнопки \"ОФОРМИТЬ\"")
     void appearanceButtonForOrderPO() {
-        open("https://www.labirint.ru/");
+        step("Открыть главную страницу", () -> {
+            mainPage.openPage();
+        });
 
         step("Добавление товара в корзину", () -> {
             mainPage.selectProduct();
@@ -50,7 +55,9 @@ public class LabirintTestUI extends UITestBase {
     @ValueSource(strings = {"Огненный поток", "1984"})
     @ParameterizedTest(name = "Проверка добавления книги в раздел \"Отложено\" {0}")
     void addBookBasketAndFavouritesPO(String bookName) {
-        open("https://www.labirint.ru/");
+        step("Открыть главную страницу", () -> {
+            mainPage.openPage();
+        });
         step(String.format("Поиск книги %s", bookName), () -> {
             mainPage.searchBook(bookName);
         });
@@ -71,7 +78,9 @@ public class LabirintTestUI extends UITestBase {
     @ValueSource(strings = {"Огненный поток", "1984"})
     @ParameterizedTest(name = "Проверка добавления книги в корзину {0}")
     void checkAddBookBasketPO(String bookName) {
-        open("https://www.labirint.ru/");
+        step("Открыть главную страницу", () -> {
+            mainPage.openPage();
+        });
 
         step(String.format("Поиск книги %s", bookName), () -> {
             mainPage.searchBook(bookName);
@@ -103,7 +112,9 @@ public class LabirintTestUI extends UITestBase {
     @MethodSource
     @ParameterizedTest(name = "Для меню \"{0}\" отображаются разделы \"{1}\"")
     void actualCommonComplexAvtoRuDropMenuTestPO (String typeDevice, List<String> expectedTypeDevice) {
-        open("https://www.labirint.ru/");
+        step("Открыть главную страницу", () -> {
+            mainPage.openPage();
+        });
 
         step("Проверка наличия элементов товаров на главной страцице", () -> {
             mainPage.selectItemHeaderMenu(typeDevice);
