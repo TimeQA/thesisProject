@@ -20,14 +20,10 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
-public class LabirintTestUI extends UITestBase{
+public class LabirintTestUI {
 
-    @Test
-    @DisplayName("Проверка главной страницы и наличие на ней элементов")
-    void searchBookNotEmpty() {
-        open("https://www.labirint.ru/");
-        step(St)
-    }
+    MainPage mainPage = new MainPage();
+
 
     @Test
     @DisplayName("Появление кнопки \"ОФОРМИТЬ\"")
@@ -146,6 +142,11 @@ public class LabirintTestUI extends UITestBase{
             mainPage.searchBook(bookName);
         });
 
+        step(String.format("Поиск книги %s", bookName), () -> {
+            mainPage.clickButtonAddedProductBasket();
+        });
+
+
         step(String.format(" %s", bookName), () -> {
             mainPage.goBasketPage();
         });
@@ -155,7 +156,13 @@ public class LabirintTestUI extends UITestBase{
         });
     }
 
-
+    static Stream<Arguments> actualCommonComplexAvtoRuDropMenuTestPO() {
+        return Stream.of(
+                Arguments.of("Игрушки", List.of( "Все игрушки", "Детское творчество", "Игры и Игрушки",
+                        "Скидки", "Отзывы", "Новинки", "Рейтинг", "Производители", "Серии")),
+                Arguments.of("Еще", List.of("CD/DVD", "Сувениры", "Журналы", "Товары для дома"))
+        );
+    }
 
     @DisplayName("Проверка drop-down menu на наличие разделов подменю")
     @MethodSource

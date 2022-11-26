@@ -21,18 +21,18 @@ public class MainPage {
     //    top-link-main_putorder
     private final SelenideElement headerMenu = $(".b-header-b-menu-wrapper");
 
-    private final SelenideElement addBasketSomeProduct = $(".product_labeled:nth-child(3)");
+    private final SelenideElement addBasketSomeProduct = $(".product_labeled:nth-child(1)");
 
     private final SelenideElement formaliseButtonSomeProduct = $(".product_labeled:nth-child(3)");
 
     private final SelenideElement firstProductInFavorites = $(".icon-fave:nth-child(1)");
     private final SelenideElement selectedProductInBasketOrFavorites = $(".need-watch");
 
-    private final SelenideElement quantityInBasket = $("li.ui-corner-top:nth-child(1)")
-            .shouldBe(Condition.text("1"));
-
-    private final SelenideElement quantityInFavourites  = $("li.ui-corner-top:nth-child(1)")
-            .shouldBe(Condition.text("1"));
+//    private final SelenideElement quantityInBasket = $("li.ui-corner-top:nth-child(1)")
+//            .shouldBe(Condition.text("1"));
+//
+//    private final SelenideElement quantityInFavourites  = $("li.ui-corner-top:nth-child(1)")
+//            .shouldBe(Condition.text("1"));
 
     private final ElementsCollection itemDropDownMenu = $$("ul li.b-menu-second-item");
 
@@ -45,11 +45,11 @@ public class MainPage {
 
     private final SelenideElement myBasketTitle = $(".basket-page__title");
 
-    public final MainPage openPage() {
-        open(baseUrl);
-
-        return this;
-    }
+//    public final MainPage openPage() {
+//        open(baseUrl);
+//
+//        return this;
+//    }
 
     public final MainPage healthCheck() {
         elementsOnPage.shouldBe(CollectionCondition.sizeGreaterThan(0));
@@ -59,6 +59,11 @@ public class MainPage {
 
     public final MainPage clickButtonAddedProductBasket() {
         addBasketSomeProduct.$(byText("В КОРЗИНУ")).click();
+        return this;
+    }
+
+    public final MainPage selectProduct() {
+        selectedProductInBasketOrFavorites.$(byText("В КОРЗИНУ")).click();
         return this;
     }
 
