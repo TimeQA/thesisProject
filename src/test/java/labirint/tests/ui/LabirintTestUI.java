@@ -49,6 +49,7 @@ public class LabirintTestUI extends TestBase {
 
     @ValueSource(strings = {"Огненный поток", "1984"})
     @ParameterizedTest(name = "Проверка добавления книги в раздел \"Отложено\" {0}")
+    @DisplayName("Проверка добавления книги в раздел \"Отложено\"")
     void addBookBasketAndFavouritesPO(String bookName) {
         step("Открыть главную страницу", () -> {
             mainPage.openPage();
@@ -72,6 +73,7 @@ public class LabirintTestUI extends TestBase {
 
     @ValueSource(strings = {"Огненный поток", "1984"})
     @ParameterizedTest(name = "Проверка добавления книги в корзину {0}")
+    @DisplayName("Проверка добавления книги в корзину")
     void checkAddBookBasketPO(String bookName) {
         step("Открыть главную страницу", () -> {
             mainPage.openPage();
