@@ -23,7 +23,9 @@ public class MainPage {
 
     private final SelenideElement addBasketSomeProduct = $(".product_labeled:nth-child(1)");
 
-    private final SelenideElement formaliseButtonSomeProduct = $(".product_labeled:nth-child(3)");
+    private final SelenideElement selectProductOnMainPage = $(".product-buy-margin:nth-child(1)");
+
+    private final SelenideElement formaliseButtonSomeProduct = $(".product-buy-margin:nth-child(1)");
 
     private final SelenideElement firstProductInFavorites = $(".icon-fave:nth-child(1)");
     private final SelenideElement selectedProductInBasketOrFavorites = $(".need-watch");
@@ -58,12 +60,12 @@ public class MainPage {
     }
 
     public final MainPage clickButtonAddedProductBasket() {
-        addBasketSomeProduct.$(byText("В КОРЗИНУ")).click();
+        selectedProductInBasketOrFavorites.$(byText("В КОРЗИНУ")).click();
         return this;
     }
 
     public final MainPage selectProduct() {
-        selectedProductInBasketOrFavorites.$(byText("В КОРЗИНУ")).click();
+        selectProductOnMainPage.$(byText("В КОРЗИНУ")).click();
         return this;
     }
 
