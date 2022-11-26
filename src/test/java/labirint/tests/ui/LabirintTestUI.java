@@ -1,10 +1,7 @@
 package labirint.tests.ui;
 
-import com.codeborne.selenide.CollectionCondition;
-import com.codeborne.selenide.Condition;
-import labirint.helpers.RandomUtils;
-import labirint.tests.ui.pages.UITestBase;
-import org.junit.jupiter.api.BeforeEach;
+import labirint.tests.TestBase;
+import labirint.tests.ui.pages.MainPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,12 +12,10 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.codeborne.selenide.Selectors.by;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
-public class LabirintTestUI extends UITestBase {
+public class LabirintTestUI extends TestBase {
+    MainPage mainPage = new MainPage();
 
     @Test
     @DisplayName("Проверка главной страницы и наличие на ней элементов")
