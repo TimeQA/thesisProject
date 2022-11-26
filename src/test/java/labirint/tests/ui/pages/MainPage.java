@@ -3,28 +3,84 @@ package labirint.tests.ui.pages;
 
 import com.codeborne.selenide.*;
 
+import java.util.List;
+
 import static com.codeborne.selenide.Configuration.baseUrl;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class MainPage {
 
+    public final MainPage openPage() {
+        open(baseUrl);
+
+        return this;
+    }
     private final SelenideElement searchField = $("#search-field");
 
     private final SelenideElement basketLink = $(".cart-icon-js");
-    private final SelenideElement shopsLink = $$(".header-menu__item")
-            .findBy(Condition.text("Адреса магазинов"));
-    private final SelenideElement souvenirsLink = $$(".nav__item.nav__item_popup")
-            .findBy(Condition.text("Сувениры"));
 
-    private final SelenideElement quantityInBasket = $("li.ui-corner-top:nth-child(1)").shouldBe(Condition.text("1"));
+    private final SelenideElement favoritesLink = $(".b-header-b-personal-e-icon-count-m-putorder");
 
-    private final SelenideElement quantityInFavourites  = $("li.ui-corner-top:nth-child(1)").shouldBe(Condition.text("1"));
+    //    top-link-main_putorder
+    private final SelenideElement headerMenu = $(".b-header-b-menu-wrapper");
 
-//    Search
-    private final ElementsCollection resultSearch = $$("div .genres-carousel__item");
+    private final SelenideElement addBasketSomeProduct = $(".product_labeled:nth-child(1)");
 
-    public final MainPage openPage() {
-        open(baseUrl);
+    private final SelenideElement selectProductOnMainPage = $(".product-buy-margin:nth-child(1)");
+
+    private final SelenideElement formaliseButtonSomeProduct = $(".product-buy-margin:nth-child(1)");
+
+    private final SelenideElement firstProductInFavorites = $(".icon-fave:nth-child(1)");
+    private final SelenideElement selectedProductInBasketOrFavorites = $(".need-watch");
+
+//    private final SelenideElement quantityInBasket = $("li.ui-corner-top:nth-child(1)")
+//            .shouldBe(Condition.text("1"));
+//
+//    private final SelenideElement quantityInFavourites  = $("li.ui-corner-top:nth-child(1)")
+//            .shouldBe(Condition.text("1"));
+
+    private final ElementsCollection itemDropDownMenu = $$("ul li.b-menu-second-item");
+
+    //    Search
+    private final ElementsCollection elementsOnPage = $$("div .genres-carousel__item");
+
+//    Basket
+
+    private final SelenideElement buttonAddBasket = $(".buy-link");
+
+    private final SelenideElement myBasketTitle = $(".basket-page__title");
+
+//    public final MainPage openPage() {
+//        open(baseUrl);
+//
+//        return this;
+//    }
+
+    public final MainPage healthCheck() {
+        elementsOnPage.shouldBe(CollectionCondition.sizeGreaterThan(0));
+
+        return this;
+    }
+
+    public final MainPage clickButtonAddedProductBasket() {
+        selectedProductInBasketOrFavorites.$(byText("В КОРЗИНУ")).click();
+        return this;
+    }
+
+    public final MainPage selectProduct() {
+        selectProductOnMainPage.$(byText("В КОРЗИНУ")).click();
+        return this;
+    }
+
+    public final MainPage addFirstProductInFavorites() {
+        firstProductInFavorites.click();
+
+        return this;
+    }
+
+    public final MainPage clickButtonFormaliseOrder() {
+        formaliseButtonSomeProduct.shouldBe(Condition.text("ОФОРМИТЬ")).click();
 
         return this;
     }
@@ -35,17 +91,6 @@ public class MainPage {
         return this;
     }
 
-    public final MainPage openShopsPage() {
-        shopsLink.click();
-
-        return this;
-    }
-
-    public final MainPage openSouvenirsPage() {
-        souvenirsLink.click();
-
-        return this;
-    }
 
     public final MainPage openBasketPage() {
         basketLink.click();
@@ -53,8 +98,35 @@ public class MainPage {
         return this;
     }
 
-    public final MainPage checkResultSearch() {
-        resultSearch.shouldBe(CollectionCondition.sizeGreaterThan(0));
+
+    public final MainPage selectItemHeaderMenu(String typeDevice) {
+        headerMenu.$(byText(typeDevice)).hover();
+
+        return this;
+    }
+
+    public final MainPage checkSubitemDropDownMenu(List<String> expectedTypeDevice) {
+        itemDropDownMenu.contains(expectedTypeDevice);
+
+        return this;
+    }
+
+    public final MainPage goFavoritesPage() {
+        favoritesLink.click();
+
+        return this;
+    }
+
+    public final MainPage goBasketPage() {
+        basketLink.click();
+
+        return this;
+
+    }
+
+
+    public final MainPage checkProductOnBasketOrFavoritesPage(String bookName) {
+        selectedProductInBasketOrFavorites.shouldBe(Condition.text(bookName));
 
         return this;
     }

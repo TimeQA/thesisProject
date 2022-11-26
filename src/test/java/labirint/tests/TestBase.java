@@ -35,7 +35,7 @@ public class TestBase {
     private static void selectDriver() throws Exception {
 
         switch (PLATFORM) {
-            case "mobile":
+            case "config/mobile":
                 switch (ENV) {
                     case "browserstack":
                         browser = BrowserstackMobileDriver.class.getName();
@@ -86,7 +86,7 @@ public class TestBase {
 
         if (PLATFORM.equals("ui") && ENV.equals("remote")) {
             AllureAttachments.addVideo(sessionId);
-        } else if (PLATFORM.equals("mobile") && ENV.equals("browserstack")) {
+        } else if (PLATFORM.equals("config/mobile") && ENV.equals("browserstack")) {
             AllureAttachments.addVideoBrowserstack(sessionId);
         }
     }

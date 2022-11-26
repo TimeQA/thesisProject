@@ -1,8 +1,7 @@
 package labirint.tests.ui;
 
-import com.codeborne.selenide.CollectionCondition;
-import com.codeborne.selenide.Condition;
-import org.junit.jupiter.api.BeforeEach;
+import labirint.tests.TestBase;
+import labirint.tests.ui.pages.MainPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,47 +12,92 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.step;
 
-public class LabirintTestUI extends  UITestBase{
-
-
-    // Сделать проверку на открытие главной страцицы
-    // Сделать проверку на добавление книги в корзину
-    // Сделать проверку на авторизацию или регистрацию
+public class LabirintTestUI extends TestBase {
+    MainPage mainPage = new MainPage();
 
     @Test
-    void addBookBasketAndFavourites() {
-        open("https://www.labirint.ru/");
-        $(".product_labeled:nth-child(1)").$(byText("В КОРЗИНУ")).click();
-        $(".icon-fave:nth-child(1)").click();
-        $(".cart-icon-js").click();
-        $("li.ui-corner-top:nth-child(1)").shouldBe(Condition.text("1"));
-        $("li.ui-corner-top:nth-child(2)").shouldBe(Condition.text("1"));
+    @DisplayName("Проверка главной страницы и наличие на ней элементов")
+    void mainPageNotEmptyPO() {
+        step("Открыть главную страницу", () -> {
+            mainPage.openPage();
+        });
+
+        step("Проверка наличия элементов товаров на главной страцице", () -> {
+            mainPage.healthCheck();
+        });
     }
 
-//    cart-icon-js
-    //    Parameterized test, two arguments input. Result test not empty
-    @ValueSource(strings = {"Берсерк", "Дэн Браун"})
-    @ParameterizedTest(name = "Результаты поиска не пустые для запроса {0}")
-    void searchBookNotEmpty(String bookName) {
-        open("https://www.labirint.ru/");
-        step(String.format("Поиск книг %s", bookName), () -> {
+    @Test
+    @DisplayName("Появление кнопки \"ОФОРМИТЬ\"")
+    void appearanceButtonForOrderPO() {
+        step("Открыть главную страницу", () -> {
+            mainPage.openPage();
+        });
+
+        step("Добавление товара в корзину", () -> {
+            mainPage.selectProduct();
+        });
+
+        step("Переход на страницу оформления товара по кнопке \"ОФОРМИТЬ\"", () -> {
+            mainPage.clickButtonFormaliseOrder();
+        });
+    }
+
+
+
+    @ValueSource(strings = {"Огненный поток", "1984"})
+    @ParameterizedTest(name = "Проверка добавления книги в раздел \"Отложено\" {0}")
+    @DisplayName("Проверка добавления книги в раздел \"Отложено\"")
+    void addBookBasketAndFavouritesPO(String bookName) {
+        step("Открыть главную страницу", () -> {
+            mainPage.openPage();
+        });
+        step(String.format("Поиск книги %s", bookName), () -> {
             mainPage.searchBook(bookName);
         });
 
-        step(String.format("Проверка наличия книг по запросу %s", bookName), () -> {
-            mainPage.checkResultSearch();
+        step("Нажать на кнопку \"Отложить\"", () -> {
+            mainPage.addFirstProductInFavorites();
         });
 
-//        $(" #search-field").setValue(bookName).pressEnter();
-//        $$("div .genres-carousel__item").shouldBe(CollectionCondition.sizeGreaterThan(0));
+        step("Переход на страницу \"Отложено\"", () -> {
+            mainPage.goFavoritesPage();
+        });
+
+        step(String.format("Проверка наличия книги в разделе  %s \"Отложено\"" , bookName), () -> {
+            mainPage.checkProductOnBasketOrFavoritesPage(bookName);
+        });
     }
 
+    @ValueSource(strings = {"Огненный поток", "1984"})
+    @ParameterizedTest(name = "Проверка добавления книги в корзину {0}")
+    @DisplayName("Проверка добавления книги в корзину")
+    void checkAddBookBasketPO(String bookName) {
+        step("Открыть главную страницу", () -> {
+            mainPage.openPage();
+        });
 
-    static Stream<Arguments> actualCommonComplexAvtoRuDropMenuTest() {
+        step(String.format("Поиск книги %s", bookName), () -> {
+            mainPage.searchBook(bookName);
+        });
+
+        step(String.format("Поиск книги %s", bookName), () -> {
+            mainPage.clickButtonAddedProductBasket();
+        });
+
+
+        step("Переходим в корзину", () -> {
+            mainPage.goBasketPage();
+        });
+
+        step(String.format("Проверка наличия книги в разделе  %s \"Отложено\"" , bookName), () -> {
+            mainPage.checkProductOnBasketOrFavoritesPage(bookName);
+        });
+    }
+
+    static Stream<Arguments> actualCommonComplexAvtoRuDropMenuTestPO() {
         return Stream.of(
                 Arguments.of("Игрушки", List.of( "Все игрушки", "Детское творчество", "Игры и Игрушки",
                         "Скидки", "Отзывы", "Новинки", "Рейтинг", "Производители", "Серии")),
@@ -64,10 +108,18 @@ public class LabirintTestUI extends  UITestBase{
     @DisplayName("Проверка drop-down menu на наличие разделов подменю")
     @MethodSource
     @ParameterizedTest(name = "Для меню \"{0}\" отображаются разделы \"{1}\"")
-    void actualCommonComplexAvtoRuDropMenuTest (String typeDevice, List<String> expectedTypeDevice) {
-        open("https://www.labirint.ru/");
-        $(".b-header-b-menu-wrapper").$(byText(typeDevice)).hover();
-        $$("ul li.b-menu-second-item").contains(expectedTypeDevice);
+    void actualCommonComplexAvtoRuDropMenuTestPO (String typeDevice, List<String> expectedTypeDevice) {
+        step("Открыть главную страницу", () -> {
+            mainPage.openPage();
+        });
+
+        step("Проверка наличия элементов товаров на главной страцице", () -> {
+            mainPage.selectItemHeaderMenu(typeDevice);
+        });
+
+        step("Проверка наличия элементов товаров на главной страцице", () -> {
+            mainPage.checkSubitemDropDownMenu(expectedTypeDevice);
+        });
 
     }
 }

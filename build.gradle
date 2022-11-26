@@ -14,7 +14,10 @@ def junitVersion = "5.9.1",
         slf4jVersion = "2.0.3",
         restAssuredVersion = "5.3.0",
         assertjVersion = "3.23.1",
-        appiumVersion = "8.2.0"
+        fakerVersion = "1.0.2",
+        appiumVersion = "8.2.0",
+        restAssuredAllureVersion = "2.20.0",
+        enginVersion = "1.9.1"
 
 
 allure {
@@ -37,16 +40,38 @@ dependencies {
             "org.aeonbits.owner:owner:$ownerVersion",
             "org.slf4j:slf4j-simple:$slf4jVersion",
             "io.rest-assured:rest-assured:$restAssuredVersion",
-            "io.appium:java-client:8.2.0",
-            "org.assertj:assertj-core:$assertjVersion"
+            "io.appium:java-client:$appiumVersion",
+            "org.assertj:assertj-core:$assertjVersion",
+            "com.github.javafaker:javafaker:$fakerVersion",
+            "io.qameta.allure:allure-rest-assured:$restAssuredAllureVersion",
+            "org.junit.platform:junit-platform-engine:$enginVersion"
     )
 }
 
-test {
-    useJUnitPlatform()
+tasks.withType(Test) {
     systemProperties(System.getProperties())
-}
+    useJUnitPlatform {
+        if (System.getProperty("tag") != null && !System.getProperty("tag").isEmpty()) {
+            includeTags System.getProperty("tag")
+        }
+    }
+    if (System.getProperty("tag") == "UI" && System.getProperty("env") == "local") {
+        systemProperties += [
+                'junit.jupiter.execution.parallel.enabled'             : true,
+                'junit.jupiter.execution.parallel.mode.default'        : 'concurrent',
+                'junit.jupiter.execution.parallel.mode.classes.default': 'same_thread',
+                'junit.jupiter.execution.parallel.config.strategy'     : 'custom',
+                'junit.jupiter.execution.parallel.config.custom.class' : 'chitaigorod.helpers.CustomStrategy'
+        ]
+    }
 
+    testLogging {
+        lifecycle {
+            events "started", "skipped", "failed", "standard_error", "standard_out"
+            exceptionFormat "short"
+        }
+    }
+}
 compileJava {
     options.encoding = 'UTF-8'
 }
