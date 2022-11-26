@@ -111,7 +111,7 @@ public class LabirintTestUI {
     }
 
 
-
+    @DisplayName("Проверка добавления книги в раздел \"Отложено\"")
     @ValueSource(strings = {"Огненный поток", "1984"})
     @ParameterizedTest(name = "Проверка добавления книги в раздел \"Отложено\" {0}")
     void addBookBasketAndFavouritesPO(String bookName) {
@@ -133,6 +133,7 @@ public class LabirintTestUI {
         });
     }
 
+    @DisplayName("Проверка добавления книги в корзину")
     @ValueSource(strings = {"Огненный поток", "1984"})
     @ParameterizedTest(name = "Проверка добавления книги в корзину {0}")
     void checkAddBookBasketPO(String bookName) {
@@ -180,3 +181,4 @@ public class LabirintTestUI {
 
     }
 }
+
